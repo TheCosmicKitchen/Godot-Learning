@@ -57,11 +57,17 @@ li.task:has(input:checked) > div { color: var(--muted); }
 table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
 th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 600; }
+figure { margin: 24px 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+nav .home { display: block; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0 10px 14px; }
+nav .home:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 <div class="layout">
 <nav aria-label="Contents">
+  <a class="home" href="../index.html">← Godot learning</a>
   <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
   <ol>
     <li><a href="#step-0-get-it-running-15-min">Step 0: Get it running (15 min)</a></li>
@@ -73,10 +79,11 @@ th { color: var(--muted); font-weight: 600; }
     <li><a href="#step-6-wrap-up">Step 6: Wrap up</a></li>
     <li><a href="#when-youre-stuck">When you're stuck</a></li>
   </ol>
-  <p class="source">Generated from <code>01-touchdown/GUIDE.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
+  <p class="source">Generated from <code>docs/touchdown/guide.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
 </nav>
 <main>
 <h1 id="touchdown-your-guide">Touchdown: your guide</h1>
+<p>What the game is and how it's built: see the <a href="spec.html">spec</a>.</p>
 <p>This is your path through the first game, one step at a time. Each step says <strong>what to do</strong>, <strong>what to learn</strong> and <strong>how to know it worked</strong>. Tick the boxes as you go.</p>
 <p>It never gives you the finished code. It tells you what to look up, what to try and which questions to ask yourself. When you're stuck for more than about 15 minutes, ask Claude: for a hint, an explanation, or what an error means.</p>
 <p>Plan on three or four sittings: Step 0 and the tour, then one or two jobs per sitting.</p>
@@ -202,21 +209,21 @@ th { color: var(--muted); font-weight: 600; }
 <h2 id="step-6-wrap-up">Step 6: Wrap up</h2>
 <ul class="tasks">
 <li class="task"><label><input type="checkbox" data-task="task-28"><span class="box"></span></label><div>Tick the goals you can now do in Units 1–4 of the <a href="../syllabus.html">syllabus</a>.</div></li>
-<li class="task"><label><input type="checkbox" data-task="task-29"><span class="box"></span></label><div>Fill in <strong>Notes after playing</strong> at the bottom of <code>README.md</code>: what was fun, what was annoying, and what clicked.</div></li>
+<li class="task"><label><input type="checkbox" data-task="task-29"><span class="box"></span></label><div>Fill in <strong>Notes after playing</strong> at the bottom of the game's <a href="https://github.com/TheCosmicKitchen/Godot-Learning/blob/main/01-touchdown/README.md" target="_blank" rel="noopener">README</a>: what was fun, what was annoying, and what clicked.</div></li>
 <li class="task"><label><input type="checkbox" data-task="task-30"><span class="box"></span></label><div>Tell Claude you're done. Next is polish: sound, particles, a best score, maybe a second player in the cabin.</div></li>
 </ul>
 <h2 id="when-youre-stuck">When you're stuck</h2>
 <ol>
 <li>Read the error in the <strong>Output</strong> or <strong>Debugger</strong> panel. It names the file and line.</li>
 <li><code>GD.Print</code> the values you think you know. Usually one of them is wrong.</li>
-<li>Check the README's <strong>Stuck?</strong> list.</li>
+<li>Check the <strong>Stuck?</strong> list in the game's <a href="https://github.com/TheCosmicKitchen/Godot-Learning/blob/main/01-touchdown/README.md#stuck" target="_blank" rel="noopener">README</a>.</li>
 <li>Ask Claude. Good questions look like &quot;I expected X, but Y happens, here's my code&quot;, or &quot;why does Godot do Z?&quot;.</li>
 </ol>
 </main>
 </div>
 <script>
 (function () {
-  var key = "strata-learn:01-touchdown/GUIDE.md";
+  var key = "godot-learning:docs/touchdown/guide.md";
   var saved = {};
   try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
   var boxes = document.querySelectorAll('input[data-task]');

@@ -57,11 +57,17 @@ li.task:has(input:checked) > div { color: var(--muted); }
 table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
 th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 600; }
+figure { margin: 24px 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+nav .home { display: block; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0 10px 14px; }
+nav .home:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 <div class="layout">
 <nav aria-label="Contents">
+  <a class="home" href="index.html">← Godot learning</a>
   <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
   <ol>
     <li><a href="#how-to-use-this">How to use this</a></li>
@@ -78,7 +84,7 @@ th { color: var(--muted); font-weight: 600; }
     <li><a href="#unit-10-shipping">Unit 10: Shipping</a></li>
     <li><a href="#units-per-game">Units per game</a></li>
   </ol>
-  <p class="source">Generated from <code>syllabus.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
+  <p class="source">Generated from <code>docs/syllabus.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
 </nav>
 <main>
 <h1 id="godot-syllabus">Godot syllabus</h1>
@@ -235,7 +241,7 @@ th { color: var(--muted); font-weight: 600; }
 </div>
 <script>
 (function () {
-  var key = "strata-learn:syllabus.md";
+  var key = "godot-learning:docs/syllabus.md";
   var saved = {};
   try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
   var boxes = document.querySelectorAll('input[data-task]');

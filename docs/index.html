@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot learning</title>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d1f22; --muted: #62666d; --line: #dedad2;
+  --accent: #b5532a; --link: #1f6f8b; --code-bg: #efece5; --done: #2f8a55; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111316; --panel: #181b1f; --ink: #e6e2da; --muted: #9a9ea5; --line: #2b2f35;
+    --accent: #e08654; --link: #6fc3dc; --code-bg: #20242a; --done: #5fc489; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.62 system-ui, "Segoe UI", Roboto, sans-serif; }
+.layout { max-width: 1160px; margin: 0 auto; padding: 32px 16px 96px; display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 980px) { .layout { grid-template-columns: 240px minmax(0, 1fr); } }
+nav { font-size: 14px; }
+@media (min-width: 980px) { nav { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; } }
+nav .progress { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+nav .bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+nav .bar span { display: block; height: 100%; width: 0; background: var(--done); transition: width .2s; }
+nav ol { list-style: none; padding: 0; margin: 0; }
+nav li a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+nav li a:hover { background: var(--panel); color: var(--ink); }
+nav .source { margin-top: 16px; color: var(--muted); font-size: 12.5px; padding: 0 10px; }
+main { min-width: 0; max-width: 780px; }
+h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 12px; }
+h2 { font-size: 1.45rem; margin: 48px 0 12px; padding-top: 8px; color: var(--accent); }
+h3 { font-size: 1.12rem; margin: 32px 0 8px; }
+p, li { overflow-wrap: anywhere; }
+a { color: var(--link); }
+hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+code { font: 0.88em/1.4 ui-monospace, Consolas, "Cascadia Mono", monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 14px 16px; border-radius: 8px; overflow-x: auto; }
+pre code { background: none; padding: 0; font-size: 0.86rem; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+li > ul, li > ol { margin: 6px 0; }
+ul.tasks { list-style: none; padding-left: 0; }
+li.task { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 10px 8px; margin: 8px 0; }
+li.task > div > p:first-child { margin-top: 0; }
+li.task > div > :last-child { margin-bottom: 0; }
+li.task label { position: relative; display: block; width: 20px; height: 20px; margin-top: 2px; cursor: pointer; }
+li.task input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+li.task .box { display: block; width: 20px; height: 20px; border: 2px solid var(--muted); border-radius: 5px; }
+li.task input:checked + .box { background: var(--done); border-color: var(--done); }
+li.task input:checked + .box::after { content: ""; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+li.task input:focus-visible + .box { outline: 2px solid var(--link); outline-offset: 2px; }
+li.task:has(input:checked) > div { color: var(--muted); }
+.table { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+figure { margin: 24px 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+nav .home { display: block; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0 10px 14px; }
+nav .home:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav aria-label="Contents">
+  <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
+  <ol>
+    <li><a href="#start-here">Start here</a></li>
+    <li><a href="#lessons">Lessons</a></li>
+    <li><a href="#how-each-game-works">How each game works</a></li>
+  </ol>
+  <p class="source">Generated from <code>docs/index.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
+</nav>
+<main>
+<h1 id="godot-learning">Godot learning</h1>
+<p>Small, finished Godot games for learning the engine, one genre at a time. Each game comes with a <strong>spec</strong> (what it is and how it's built) and a <strong>guide</strong> (what to do and learn, step by step, with checkboxes that remember your progress in this browser).</p>
+<p>Code: <a href="https://github.com/TheCosmicKitchen/Godot-Learning" target="_blank" rel="noopener">github.com/TheCosmicKitchen/Godot-Learning</a></p>
+<h2 id="start-here">Start here</h2>
+<div class="table"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><a href="roadmap.html">Roadmap</a></td><td>The ten games, and how the work is split between you and Claude</td></tr>
+<tr><td><a href="syllabus.html">Syllabus</a></td><td>Ten units of Godot: goals, reading, exercises</td></tr>
+</tbody></table></div>
+<h2 id="lessons">Lessons</h2>
+<div class="table"><table><thead><tr><th>#</th><th>Game</th><th>Spec</th><th>Guide</th><th>Status</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>Touchdown</strong>: land a ship by steering both crew at once</td><td><a href="touchdown/spec.html">Spec</a></td><td><a href="touchdown/guide.html">Guide</a></td><td>Set up, your turn</td></tr>
+<tr><td>2</td><td>Pressure: grid puzzle</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>3</td><td>Hold the Line: arena survival</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>4</td><td>Crumble: local party game</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>5</td><td>Deep Hand: card game</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>6</td><td>Two Keys: online co-op puzzle</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>7</td><td>Dig Beat: rhythm game</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>8</td><td>Little Camp: colony sim</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>9</td><td>Diorama Drive: a 3D detour</td><td></td><td></td><td>Planned</td></tr>
+<tr><td>10</td><td>Sand Jar: falling-sand toy</td><td></td><td></td><td>Planned</td></tr>
+</tbody></table></div>
+<figure><img src="touchdown/img/in-flight.png" alt="Touchdown in flight" loading="lazy"><figcaption>Touchdown in flight</figcaption></figure>
+<h2 id="how-each-game-works">How each game works</h2>
+<ol>
+<li><strong>Setup (Claude):</strong> the project, scenes, input, placeholder art and game loop, with the core methods left empty and marked <code>// YOU:</code>.</li>
+<li><strong>Core (you):</strong> follow the guide and write those methods by hand. Ask Claude for hints and explanations, not answers.</li>
+<li><strong>Review (Claude, with you):</strong> a code review and an idiomatic Godot review of what you wrote. You make the fixes.</li>
+<li><strong>Polish (together):</strong> feel, sound and the extras that make it fun. Then a short note on what you learned.</li>
+</ol>
+</main>
+</div>
+<script>
+(function () {
+  var key = "godot-learning:docs/index.md";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  var boxes = document.querySelectorAll('input[data-task]');
+  if (!boxes.length) { document.querySelector('nav .progress').style.display = 'none'; return; }
+  function count() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    document.getElementById('done').textContent = n;
+    document.getElementById('total').textContent = boxes.length;
+    document.getElementById('bar').style.width = (boxes.length ? 100 * n / boxes.length : 0) + '%';
+  }
+  boxes.forEach(function (b) {
+    if (saved[b.dataset.task] !== undefined) b.checked = saved[b.dataset.task];
+    b.addEventListener('change', function () {
+      saved[b.dataset.task] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+      count();
+    });
+  });
+  count();
+})();
+</script>
+</body>
+</html>

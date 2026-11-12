@@ -11,7 +11,9 @@ Standing still at your levers is the easy version. The fun starts when the ship 
 
 Land on pads 1 to 4 in order. Each landing gives back some fuel. Touching down too fast or too tilted is a crash.
 
-**Units from the [syllabus](../syllabus.md):** 1 Editor and scenes · 2 C# and input · 3 Physics · 4 Signals. You'll also see 5 (scenes and HUD), 6 (camera, particles) and 8 (a SubViewport) in the code that's already written.
+The full spec with screenshots is [docs/touchdown/spec.md](../docs/touchdown/spec.md) ([web](https://thecosmickitchen.github.io/Godot-Learning/touchdown/spec.html)).
+
+**Units from the [syllabus](../docs/syllabus.md):** 1 Editor and scenes · 2 C# and input · 3 Physics · 4 Signals. You'll also see 5 (scenes and HUD), 6 (camera, particles) and 8 (a SubViewport) in the code that's already written.
 
 ## Run it
 
@@ -44,7 +46,7 @@ That's why tilting the ship tilts "down" for the crew, thrusting presses you int
 
 ## Your four jobs
 
-For a step-by-step path through these, with what to read and try at each step, see [GUIDE.md](GUIDE.md), or open [GUIDE.html](GUIDE.html) in a browser for clickable checkboxes that remember your progress.
+For a step-by-step path through these, with what to read and try at each step, see the guide: [docs/touchdown/guide.md](../docs/touchdown/guide.md), or [on the web](https://thecosmickitchen.github.io/Godot-Learning/touchdown/guide.html) with checkboxes that remember your progress.
 
 Each one is a method marked `// YOU:` with hints in its comment. Do them in this order; each makes the game a bit more alive.
 

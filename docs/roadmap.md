@@ -24,7 +24,7 @@ Setup should never write the core. If the `// YOU:` parts are trivial, the game 
 
 ## The games
 
-### 1. Touchdown: land it from inside ([01-touchdown](01-touchdown/))
+### 1. Touchdown: land it from inside ([spec](touchdown/spec.md), [guide](touchdown/guide.md))
 **Play:** a lander shown in cross-section, with two crew in the cabin and one thruster lever at each end. You drive both crew at once, one per hand (WASD and the arrows, or the two halves of one gamepad). Land on each pad in turn. Each crew member's weight tips the ship, thrusting presses them into the floor, and falling freely makes them float, so sooner or later one of them has to leave their lever.
 **You make:** walking and jumping when "down" keeps changing (one script, two control schemes), the levers, the thrusters, and the landing or crash decision.
 **Godot:** the editor and node tree, `CharacterBody2D` and `RigidBody2D` side by side, `Area2D` and signals, `ApplyForce` at an offset, the Input Map, and (already written, to read) a `SubViewport` with its own physics world, a HUD on a `CanvasLayer`, and switching scenes.

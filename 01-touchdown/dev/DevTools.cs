@@ -31,15 +31,31 @@ public partial class DevTools : Node
 		// Hover, then sink back onto pad 0.
 		["hover"] = [(0.5f, "L=0.62", true), (0.5f, "R=0.62", true), (3f, "L=0.54", true), (3f, "R=0.54", true)],
 		// Drop onto pad 1 gently: should count as a landing.
-		["land"] = [(0.2f, "tp=1", true), (0.2f, "L=0.59", true), (0.2f, "R=0.525", true)],
+		["land"] = [(0.2f, "tp=1", true), (0.2f, "L=0.58", true), (0.2f, "R=0.665", true)],
 		// Spin the ship into the ground: should crash.
 		["crash"] = [(0.5f, "L=1", true), (0.5f, "R=0.45", true), (2.5f, "L=0", true), (2.5f, "R=0", true)],
+		// Lift off with both hands, then walk the teal crew toward the middle so the ship tips.
+		["showcase"] =
+		[
+			(0.3f, "p1_lever_up", true), (0.3f, "p2_lever_up", true), (1.4f, "p1_lever_up", false), (1.4f, "p2_lever_up", false),
+			(2.6f, "p2_move_left", true), (3.3f, "p2_move_left", false),
+		],
+		// Stay on the title screen (screenshots only).
+		["title"] = [],
 	};
 
 	readonly Dictionary<string, string> _args = new();
 	(float t, string action, bool down)[] _script = [];
 	int _next;
 	float _time, _nextShot = 1f, _nextLog;
+
+	/// <summary>The value of a --name=value argument, or null.</summary>
+	public static string? Arg(string name)
+	{
+		foreach (string a in OS.GetCmdlineUserArgs())
+			if (a.StartsWith($"--{name}=")) return a[(name.Length + 3)..];
+		return null;
+	}
 
 	public static bool Wanted()
 	{
@@ -82,7 +98,8 @@ public partial class DevTools : Node
 		if (_time >= _nextLog)
 		{
 			_nextLog += 0.5f;
-			var ship = GetParent().GetNode<Ship>("Ship");
+			var ship = GetParent().GetNodeOrNull<Ship>("Ship");
+			if (ship == null) return;
 			var (crew, crew2) = (ship.Interior.Crew1, ship.Interior.Crew2);
 			GD.Print(string.Format(CultureInfo.InvariantCulture,
 				"t={0:0.0} ship=({1:0},{2:0}) v=({3:0},{4:0}) tilt={5:0} fuel={6:0.0} L={7:0.00} R={8:0.00} p1=({9:0},{10:0}) p2=({14:0},{15:0}) g=({11:0},{12:0}) wrecked={13}",

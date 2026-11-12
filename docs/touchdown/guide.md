@@ -1,5 +1,7 @@
 # Touchdown: your guide
 
+What the game is and how it's built: see the [spec](spec.md).
+
 This is your path through the first game, one step at a time. Each step says **what to do**, **what to learn** and **how to know it worked**. Tick the boxes as you go.
 
 It never gives you the finished code. It tells you what to look up, what to try and which questions to ask yourself. When you're stuck for more than about 15 minutes, ask Claude: for a hint, an explanation, or what an error means.
@@ -157,12 +159,12 @@ Don't write any code yet. The goal is to know where things are.
 ## Step 6: Wrap up
 
 - [ ] Tick the goals you can now do in Units 1–4 of the [syllabus](../syllabus.md).
-- [ ] Fill in **Notes after playing** at the bottom of `README.md`: what was fun, what was annoying, and what clicked.
+- [ ] Fill in **Notes after playing** at the bottom of the game's [README](https://github.com/TheCosmicKitchen/Godot-Learning/blob/main/01-touchdown/README.md): what was fun, what was annoying, and what clicked.
 - [ ] Tell Claude you're done. Next is polish: sound, particles, a best score, maybe a second player in the cabin.
 
 ## When you're stuck
 
 1. Read the error in the **Output** or **Debugger** panel. It names the file and line.
 2. `GD.Print` the values you think you know. Usually one of them is wrong.
-3. Check the README's **Stuck?** list.
+3. Check the **Stuck?** list in the game's [README](https://github.com/TheCosmicKitchen/Godot-Learning/blob/main/01-touchdown/README.md#stuck).
 4. Ask Claude. Good questions look like "I expected X, but Y happens, here's my code", or "why does Godot do Z?".

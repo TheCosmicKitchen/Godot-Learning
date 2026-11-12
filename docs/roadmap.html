@@ -57,11 +57,17 @@ li.task:has(input:checked) > div { color: var(--muted); }
 table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
 th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 600; }
+figure { margin: 24px 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+nav .home { display: block; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0 10px 14px; }
+nav .home:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 <div class="layout">
 <nav aria-label="Contents">
+  <a class="home" href="index.html">← Godot learning</a>
   <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
   <ol>
     <li><a href="#why-this-exists">Why this exists</a></li>
@@ -69,7 +75,7 @@ th { color: var(--muted); font-weight: 600; }
     <li><a href="#the-games">The games</a></li>
     <li><a href="#order">Order</a></li>
   </ol>
-  <p class="source">Generated from <code>roadmap.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
+  <p class="source">Generated from <code>docs/roadmap.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
 </nav>
 <main>
 <h1 id="roadmap-small-godot-games">Roadmap: small Godot games</h1>
@@ -90,7 +96,7 @@ th { color: var(--muted); font-weight: 600; }
 </tbody></table></div>
 <p>Setup should never write the core. If the <code>// YOU:</code> parts are trivial, the game is too small; if they take more than an evening, setup should do more.</p>
 <h2 id="the-games">The games</h2>
-<h3 id="1-touchdown-land-it-from-inside-01-touchdown01-touchdown">1. Touchdown: land it from inside (<a href="01-touchdown/">01-touchdown</a>)</h3>
+<h3 id="1-touchdown-land-it-from-inside-spectouchdownspecmd-guidetouchdownguidemd">1. Touchdown: land it from inside (<a href="touchdown/spec.html">spec</a>, <a href="touchdown/guide.html">guide</a>)</h3>
 <p><strong>Play:</strong> a lander shown in cross-section, with two crew in the cabin and one thruster lever at each end. You drive both crew at once, one per hand (WASD and the arrows, or the two halves of one gamepad). Land on each pad in turn. Each crew member's weight tips the ship, thrusting presses them into the floor, and falling freely makes them float, so sooner or later one of them has to leave their lever. <strong>You make:</strong> walking and jumping when &quot;down&quot; keeps changing (one script, two control schemes), the levers, the thrusters, and the landing or crash decision. <strong>Godot:</strong> the editor and node tree, <code>CharacterBody2D</code> and <code>RigidBody2D</code> side by side, <code>Area2D</code> and signals, <code>ApplyForce</code> at an offset, the Input Map, and (already written, to read) a <code>SubViewport</code> with its own physics world, a HUD on a <code>CanvasLayer</code>, and switching scenes. <strong>STRATA:</strong> a vehicle you drive from inside, with stations far apart. It's a small version of the Crawler interior and E3 Driving blind.</p>
 <h3 id="2-pressure-grid-puzzle">2. Pressure: grid puzzle</h3>
 <p><strong>Play:</strong> hand-made levels where water is about to flow. Lay pipes, valves and drains on a grid so the water reaches the tank and floods nothing important. Undo is free and the levels get harder. <strong>You make:</strong> the flow rules and the win check. <strong>Godot:</strong> <code>TileMapLayer</code> with custom data per tile, levels as scenes, switching between scenes, a level-select menu built from <code>Control</code> nodes, an undo stack. <strong>STRATA:</strong> working with grid data and fluids at a scale you can reason about.</p>
@@ -118,7 +124,7 @@ th { color: var(--muted); font-weight: 600; }
 </div>
 <script>
 (function () {
-  var key = "strata-learn:roadmap.md";
+  var key = "godot-learning:docs/roadmap.md";
   var saved = {};
   try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
   var boxes = document.querySelectorAll('input[data-task]');

@@ -1,7 +1,7 @@
-// Renders the learning docs (Markdown) to standalone HTML pages you can open in any browser.
+// Renders every Markdown page under docs/ to a standalone HTML page next to it. GitHub Pages serves docs/ as the site.
 // No dependencies: a small Markdown parser for what these docs use (headings, paragraphs, nested and task lists,
-// tables, fenced code, links, bold, italic, inline code). Task-list checkboxes are clickable and remembered per page
-// in the browser's local storage.
+// tables, fenced code, images, links, bold, italic, inline code). Task-list checkboxes are clickable and remembered
+// per page in the browser's local storage.
 //
 // Usage (from the repo root): node tools/md-to-html.js
 // Edit the Markdown, then rerun; the .html files are generated next to their .md sources.
@@ -9,7 +9,10 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const PAGES = ['roadmap.md', 'syllabus.md', '01-touchdown/GUIDE.md'];
+const docs = path.join(root, 'docs');
+const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(e =>
+	e.isDirectory() ? walk(path.join(dir, e.name)) : e.name.endsWith('.md') ? [path.join(dir, e.name)] : []);
+const PAGES = walk(docs).map(f => path.relative(root, f).split(path.sep).join('/'));
 const rendered = new Set(PAGES.map(p => path.resolve(root, p)));
 
 // ── Inline ─────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -19,6 +22,8 @@ function inline(text, fromFile) {
 	const codes = [];
 	text = text.replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
 	text = esc(text);
+	text = text.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
+		`<figure><img src="${src}" alt="${alt}" loading="lazy"><figcaption>${alt}</figcaption></figure>`);
 	text = text.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => `<a href="${linkTarget(href, fromFile)}">${label}</a>`);
 	text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 	text = text.replace(/(^|[^\w*])\*([^*\s][^*]*?)\*(?!\w)/g, '$1<em>$2</em>');
@@ -73,7 +78,8 @@ function blocks(lines, ctx) {
 		} else {
 			const para = [];
 			for (; i < lines.length && lines[i].trim() && !(para.length && startsBlock(lines[i])); i++) para.push(lines[i].trim());
-			out += `<p>${inline(para.join(' '), ctx.file)}</p>\n`;
+			const html = inline(para.join(' '), ctx.file);
+			out += /^<figure>.*<\/figure>$/.test(html) ? html + '\n' : `<p>${html}</p>\n`;
 		}
 	}
 	return out;
@@ -116,7 +122,7 @@ function list(lines, i, ctx) {
 }
 
 // ── Page ───────────────────────────────────────────────────────────────────────────────────────────────────────────
-function page(title, toc, body, source, storageKey) {
+function page(title, toc, body, source, storageKey, home) {
 	return `<!doctype html>
 <html lang="en">
 <head>
@@ -176,12 +182,17 @@ li.task:has(input:checked) > div { color: var(--muted); }
 table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
 th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 600; }
+figure { margin: 24px 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+nav .home { display: block; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0 10px 14px; }
+nav .home:hover { color: var(--accent); }
 </style>
 </head>
 <body>
 <div class="layout">
 <nav aria-label="Contents">
-  <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
+${home ? `  <a class="home" href="${home}">← Godot learning</a>\n` : ''}  <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
   <ol>
 ${toc.map(t => `    <li><a href="#${t.id}">${t.html}</a></li>`).join('\n')}
   </ol>
@@ -226,6 +237,8 @@ for (const rel of PAGES) {
 	const ctx = { file, toc: [], tasks: 0, title: '' };
 	const body = blocks(md.split('\n'), ctx);
 	const out = file.replace(/\.md$/, '.html');
-	fs.writeFileSync(out, page(ctx.title || rel, ctx.toc, body, rel, 'strata-learn:' + rel));
+	const home = path.resolve(file) === path.join(docs, 'index.md') ? '' :
+		path.relative(path.dirname(file), path.join(docs, 'index.html')).split(path.sep).join('/');
+	fs.writeFileSync(out, page(ctx.title || rel, ctx.toc, body, rel, 'godot-learning:' + rel, home));
 	console.log(`wrote ${path.relative(root, out)} (${ctx.tasks} checkboxes)`);
 }

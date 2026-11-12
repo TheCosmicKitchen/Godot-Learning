@@ -7,7 +7,9 @@ public partial class Title : Control
 {
 	public override void _Ready()
 	{
-		if (DevTools.Wanted()) CallDeferred(MethodName.Start);
+		if (!DevTools.Wanted()) return;
+		if (DevTools.Arg("drive") == "title") AddChild(new DevTools()); // stay here and take screenshots
+		else CallDeferred(MethodName.Start);
 	}
 
 	public override void _UnhandledInput(InputEvent e)
