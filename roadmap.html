@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap: small Godot games</title>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d1f22; --muted: #62666d; --line: #dedad2;
+  --accent: #b5532a; --link: #1f6f8b; --code-bg: #efece5; --done: #2f8a55; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111316; --panel: #181b1f; --ink: #e6e2da; --muted: #9a9ea5; --line: #2b2f35;
+    --accent: #e08654; --link: #6fc3dc; --code-bg: #20242a; --done: #5fc489; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.62 system-ui, "Segoe UI", Roboto, sans-serif; }
+.layout { max-width: 1160px; margin: 0 auto; padding: 32px 16px 96px; display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 980px) { .layout { grid-template-columns: 240px minmax(0, 1fr); } }
+nav { font-size: 14px; }
+@media (min-width: 980px) { nav { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; } }
+nav .progress { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+nav .bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+nav .bar span { display: block; height: 100%; width: 0; background: var(--done); transition: width .2s; }
+nav ol { list-style: none; padding: 0; margin: 0; }
+nav li a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+nav li a:hover { background: var(--panel); color: var(--ink); }
+nav .source { margin-top: 16px; color: var(--muted); font-size: 12.5px; padding: 0 10px; }
+main { min-width: 0; max-width: 780px; }
+h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 12px; }
+h2 { font-size: 1.45rem; margin: 48px 0 12px; padding-top: 8px; color: var(--accent); }
+h3 { font-size: 1.12rem; margin: 32px 0 8px; }
+p, li { overflow-wrap: anywhere; }
+a { color: var(--link); }
+hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+code { font: 0.88em/1.4 ui-monospace, Consolas, "Cascadia Mono", monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 14px 16px; border-radius: 8px; overflow-x: auto; }
+pre code { background: none; padding: 0; font-size: 0.86rem; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+li > ul, li > ol { margin: 6px 0; }
+ul.tasks { list-style: none; padding-left: 0; }
+li.task { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 10px 8px; margin: 8px 0; }
+li.task > div > p:first-child { margin-top: 0; }
+li.task > div > :last-child { margin-bottom: 0; }
+li.task label { position: relative; display: block; width: 20px; height: 20px; margin-top: 2px; cursor: pointer; }
+li.task input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+li.task .box { display: block; width: 20px; height: 20px; border: 2px solid var(--muted); border-radius: 5px; }
+li.task input:checked + .box { background: var(--done); border-color: var(--done); }
+li.task input:checked + .box::after { content: ""; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+li.task input:focus-visible + .box { outline: 2px solid var(--link); outline-offset: 2px; }
+li.task:has(input:checked) > div { color: var(--muted); }
+.table { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav aria-label="Contents">
+  <div class="progress"><strong id="done">0</strong> of <span id="total">0</span> done<div class="bar"><span id="bar"></span></div></div>
+  <ol>
+    <li><a href="#why-this-exists">Why this exists</a></li>
+    <li><a href="#how-we-split-the-work">How we split the work</a></li>
+    <li><a href="#the-games">The games</a></li>
+    <li><a href="#order">Order</a></li>
+  </ol>
+  <p class="source">Generated from <code>roadmap.md</code>. Edit the Markdown, then run <code>node tools/md-to-html.js</code>.</p>
+</nav>
+<main>
+<h1 id="roadmap-small-godot-games">Roadmap: small Godot games</h1>
+<p>Status: proposed 12 Nov 2026, revised the same day for more variety.</p>
+<h2 id="why-this-exists">Why this exists</h2>
+<p>STRATA's caving MVP works, but it barely uses Godot: one <code>Game.cs</code> draws the whole world into a single image, which skips most of the engine. This roadmap is a run of small games in <strong>different genres</strong>, each one finished and fun on its own. They aren't parts of STRATA. Each one teaches a few Godot systems well, and most of them also try out something STRATA will need later (a feel, a system, or an open design question).</p>
+<p>Each game:</p>
+<ul>
+<li><strong>is finished end to end</strong>: a title, a goal, a win or a loss, a restart, and a Windows build you could send to a friend.</li>
+<li><strong>takes one or two evenings.</strong> If one starts to run long, cut scope.</li>
+<li><strong>lives in its own Godot .NET project</strong> at <code>NN-name/</code>, all in C#, so a 3D game or an odd genre never tangles with another.</li>
+</ul>
+<h2 id="how-we-split-the-work">How we split the work</h2>
+<div class="table"><table><thead><tr><th>Step</th><th>Who</th><th>What</th></tr></thead><tbody>
+<tr><td><strong>Setup</strong></td><td>Claude (agentic)</td><td>Creates the project, Input Map, scene tree, placeholder art, title screen, win/lose/restart loop and export preset. Writes empty methods marked <code>// YOU:</code> with a short hint each, and a <code>README.md</code> with the goal, the Godot docs pages to read and a &quot;stuck?&quot; list. Checks that it builds and runs.</td></tr>
+<tr><td><strong>Core</strong></td><td>You (hands-on)</td><td>Write the mechanic that makes the game fun: the part that teaches the Godot system. You do it in the editor and the code yourself. Claude answers questions and explains, and writes code only when you ask.</td></tr>
+<tr><td><strong>Polish</strong></td><td>Claude, with you</td><td>Adds feel (screen shake, tweens, particles, sound), fixes bugs, tunes numbers, and makes the build. Then a short note in the README: what was fun, what you learned, and anything to carry into STRATA.</td></tr>
+</tbody></table></div>
+<p>Setup should never write the core. If the <code>// YOU:</code> parts are trivial, the game is too small; if they take more than an evening, setup should do more.</p>
+<h2 id="the-games">The games</h2>
+<h3 id="1-touchdown-land-it-from-inside-01-touchdown01-touchdown">1. Touchdown: land it from inside (<a href="01-touchdown/">01-touchdown</a>)</h3>
+<p><strong>Play:</strong> a lander shown in cross-section, with two crew in the cabin and one thruster lever at each end. You drive both crew at once, one per hand (WASD and the arrows, or the two halves of one gamepad). Land on each pad in turn. Each crew member's weight tips the ship, thrusting presses them into the floor, and falling freely makes them float, so sooner or later one of them has to leave their lever. <strong>You make:</strong> walking and jumping when &quot;down&quot; keeps changing (one script, two control schemes), the levers, the thrusters, and the landing or crash decision. <strong>Godot:</strong> the editor and node tree, <code>CharacterBody2D</code> and <code>RigidBody2D</code> side by side, <code>Area2D</code> and signals, <code>ApplyForce</code> at an offset, the Input Map, and (already written, to read) a <code>SubViewport</code> with its own physics world, a HUD on a <code>CanvasLayer</code>, and switching scenes. <strong>STRATA:</strong> a vehicle you drive from inside, with stations far apart. It's a small version of the Crawler interior and E3 Driving blind.</p>
+<h3 id="2-pressure-grid-puzzle">2. Pressure: grid puzzle</h3>
+<p><strong>Play:</strong> hand-made levels where water is about to flow. Lay pipes, valves and drains on a grid so the water reaches the tank and floods nothing important. Undo is free and the levels get harder. <strong>You make:</strong> the flow rules and the win check. <strong>Godot:</strong> <code>TileMapLayer</code> with custom data per tile, levels as scenes, switching between scenes, a level-select menu built from <code>Control</code> nodes, an undo stack. <strong>STRATA:</strong> working with grid data and fluids at a scale you can reason about.</p>
+<h3 id="3-hold-the-line-top-down-arena-survival">3. Hold the Line: top-down arena survival</h3>
+<p><strong>Play:</strong> a ten-minute run in a small arena. Waves of creatures come at you; between waves you choose one of three upgrades. Each run plays out differently. <strong>You make:</strong> one weapon, two enemy behaviours, and the upgrade effects. <strong>Godot:</strong> instancing scenes at runtime, <code>Area2D</code> hitboxes and hurtboxes, groups, custom signals, a HUD made from <code>Control</code> nodes, <code>Timer</code>, object pooling, and the profiler once there are 300 enemies on screen. <strong>STRATA:</strong> creature behaviour and how many things the engine can move at once.</p>
+<h3 id="4-crumble-local-party-game">4. Crumble: local party game</h3>
+<p><strong>Play:</strong> two to four players on one screen with controllers, on a platform that breaks apart under them. Shove each other off, and the last one standing wins the round. <strong>You make:</strong> the shove, the crumbling tiles and the round scoring. <strong>Godot:</strong> several gamepads (device IDs), joining players at runtime, physics impulses, a shared camera that zooms to fit everyone. <strong>STRATA:</strong> tries out one of the design's open questions: one shared camera, or one per player?</p>
+<h3 id="5-deep-hand-card-game">5. Deep Hand: card game</h3>
+<p><strong>Play:</strong> a solo card game of your own design. You draw rope, lamp and pick cards to go down a cave one depth at a time, and each card you play changes what's ahead. Five minutes a run. <strong>You make:</strong> the card rules and the dig resolution. <strong>Godot:</strong> <code>Control</code> layout with containers and themes, drag and drop, <code>Tween</code>, custom <code>Resource</code> classes saved as <code>.tres</code> files for the card data. <strong>STRATA:</strong> data-driven content and UI, which the journal and items will both need.</p>
+<h3 id="6-two-keys-online-co-op-puzzle">6. Two Keys: online co-op puzzle</h3>
+<p><strong>Play:</strong> two players on two PCs. Each sees half of the room: one sees the levers, the other sees what they move. Talk it through to escape. <strong>You make:</strong> the puzzle logic and what each player is shown. <strong>Godot:</strong> <code>ENetMultiplayerPeer</code> hosting and joining, <code>[Rpc]</code> methods, authority, <code>MultiplayerSpawner</code> and <code>MultiplayerSynchronizer</code>, a lobby screen. <strong>STRATA:</strong> the design's biggest risk (networking) and its &quot;split the crew&quot; pillar, on a small scale.</p>
+<h3 id="7-dig-beat-rhythm-game">7. Dig Beat: rhythm game</h3>
+<p><strong>Play:</strong> dig through layers of rock in time with the music. Swings on the beat break more rock; missing the beat clogs the shaft. <strong>You make:</strong> the timing window and scoring. <strong>Godot:</strong> <code>AudioStreamPlayer</code> and syncing to the playback position, <code>AnimationPlayer</code>, audio buses and effects. <strong>STRATA:</strong> audio, which hasn't been touched yet.</p>
+<h3 id="8-little-camp-colony-sim">8. Little Camp: colony sim</h3>
+<p><strong>Play:</strong> a few small workers you can't control directly. Mark jobs (chop, carry, build a wall) and keep the camp fed and lit through three nights while something prowls outside. <strong>You make:</strong> how workers pick jobs and carry things. <strong>Godot:</strong> <code>NavigationRegion2D</code> and <code>NavigationAgent2D</code>, a simple state machine, autoloads, saving and loading to JSON with <code>FileAccess</code>, a day–night cycle with <code>CanvasModulate</code>. <strong>STRATA:</strong> a base that has to be kept up, and saving a run.</p>
+<h3 id="9-diorama-drive-a-3d-detour">9. Diorama Drive: a 3D detour</h3>
+<p><strong>Play:</strong> drive a small truck around a 3D island and deliver crates without tipping over. <strong>You make:</strong> the truck setup and the deliveries. <strong>Godot:</strong> Godot's 3D side: <code>Node3D</code>, <code>VehicleBody3D</code>, lights and shadows, CSG for blocking out the level, <code>Camera3D</code> follow. <strong>STRATA:</strong> no direct link. It's here for variety and to show whether 3D tempts you.</p>
+<h3 id="10-sand-jar-falling-sand-toy">10. Sand Jar: falling-sand toy</h3>
+<p><strong>Play:</strong> a sandbox jar using the real <code>Strata.Sim</code>. Pour materials, set fires and grow grey lace; hidden challenges unlock as you experiment (&quot;make obsidian&quot;, &quot;fill the jar with light&quot;). <strong>You make:</strong> the tools that pour and the challenge checks. <strong>Godot:</strong> drawing the sim into chunk textures, a material-id shader, <code>WorkerThreadPool</code>, and the profiler and Monitors. <strong>STRATA:</strong> the fix for the MVP's single big image, and a test of whether the sim is fun to play with on its own.</p>
+<p>See <a href="syllabus.html">syllabus.md</a> for the units, goals and reading list each game draws on.</p>
+<h2 id="order">Order</h2>
+<p>Play 1 to 3 in order, since they cover the basics. After that, pick whichever sounds most fun that week. Two tips: do Two Keys (6) before STRATA's own networking work, and Sand Jar (10) before reworking how the MVP is drawn.</p>
+<p>Mix freely: the plan should change once you've played the first two. Add a game if one occurs to you, and drop any that stops sounding fun.</p>
+</main>
+</div>
+<script>
+(function () {
+  var key = "strata-learn:roadmap.md";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  var boxes = document.querySelectorAll('input[data-task]');
+  if (!boxes.length) { document.querySelector('nav .progress').style.display = 'none'; return; }
+  function count() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    document.getElementById('done').textContent = n;
+    document.getElementById('total').textContent = boxes.length;
+    document.getElementById('bar').style.width = (boxes.length ? 100 * n / boxes.length : 0) + '%';
+  }
+  boxes.forEach(function (b) {
+    if (saved[b.dataset.task] !== undefined) b.checked = saved[b.dataset.task];
+    b.addEventListener('change', function () {
+      saved[b.dataset.task] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+      count();
+    });
+  });
+  count();
+})();
+</script>
+</body>
+</html>

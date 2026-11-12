@@ -1,0 +1,10 @@
+# Godot
+.godot/
+*.import.tmp
+export_presets.cfg
+
+# .NET
+bin/
+obj/
+.vs/
+*.user
