@@ -2,7 +2,7 @@
 
 Small, finished Godot games for learning the engine, one genre at a time. Each one is a separate Godot 4.7 .NET project in C#. Claude sets up the project, you write the core mechanic by hand, and then you polish it together.
 
-Some of the games try out ideas for [STRATA](../strata/), but this repo stands on its own.
+Some of the games try out ideas for STRATA, a separate game project, but this repo stands on its own.
 
 ## Where things are
 
